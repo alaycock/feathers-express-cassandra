@@ -125,7 +125,7 @@ class Service {
 
       Object.keys(data).forEach(function(key) {
         if (typeof instance[key] !== 'undefined') {
-          instance[key] == data[key];
+          instance[key] = data[key];
         }
       });
 
