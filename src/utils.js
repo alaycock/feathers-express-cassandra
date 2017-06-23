@@ -72,7 +72,7 @@ export function getMaterializedOptions(options = {}, where, materialized_views) 
 export function getQueryAndOptions(idField, id, params, materialized_views) {
   let options = params.cassandra || {};
   let q = {};
-  if (id) {
+  if (id !== null) {
     q[idField] = id;
   }
 
