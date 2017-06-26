@@ -78,7 +78,14 @@ class Service {
       return instance;
     })
     .then(select(params, this.id))
-    .catch(utils.errorHandler);
+    .catch((err) => {
+      if ((err.name && err.name ==='NotFound') ||
+          (err.cause && err.cause.name === 'apollo.model.validator.invalidvalue')) {
+        return undefined;
+      }
+
+      return utils.errorHandler(err);
+    });
   }
 
   // returns either the model intance for an id or all unpaginated
