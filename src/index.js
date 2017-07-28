@@ -78,7 +78,14 @@ class Service {
       return instance;
     })
     .then(select(params, this.id))
-    .catch(utils.errorHandler);
+    .catch((err) => {
+      if ((err.name && err.name ==='NotFound') ||
+          (err.cause && err.cause.name === 'apollo.model.validator.invalidvalue')) {
+        return undefined;
+      }
+
+      return utils.errorHandler(err);
+    });
   }
 
   // returns either the model intance for an id or all unpaginated
@@ -125,7 +132,7 @@ class Service {
 
       Object.keys(data).forEach(function(key) {
         if (typeof instance[key] !== 'undefined') {
-          instance[key] == data[key];
+          instance[key] = data[key];
         }
       });
 
@@ -166,14 +173,14 @@ class Service {
   remove (id, params) {
     const {query, options} = utils.getQueryAndOptions(this.id, id, params, this.materialized_views);
 
-    return this.Model.findOneAsync(query, options).then(function (instance) {
-      if (!instance) {
-        throw new errors.NotFound(`No record found for id '${id}'`);
+    return this.Model.findAsync(query, options).then(function (instances) {
+      if (!instances.length) {
+        if(id) {
+          throw new errors.NotFound(`No record found for id '${id}'`);
+        }
+        throw new errors.NotFound(`No records match query`);
       }
-
-      return instance.deleteAsync().then(function () {
-        return {};
-      });
+      return Promise.all(instances.map(instance => instance.deleteAsync())).then(() => ({}));
     })
     .then(select(params, this.id))
     .catch(utils.errorHandler);
