@@ -1,10 +1,10 @@
 {
-  "name": "feathers-express-cassandra",
+  "name": "@versett/feathers-express-cassandra",
   "version": "0.3.1",
   "description": "A Feathers service adapter for the Cassandra ORM (express-cassandra)",
   "main": "lib/",
   "directories": {
-    "lib": "lib"
+    "example": "example"
   },
   "dependencies": {
     "cassandra-driver": "^3.2.0",
@@ -66,7 +66,7 @@
     "database",
     "db"
   ],
-  "author": "Hon Chau",
+  "author": "Hon Chau, forked by Adam Laycock",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/asplogic/feathers-express-cassandra/issues"
