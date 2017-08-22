@@ -122,7 +122,7 @@ class Service {
   }
 
   patch (id, data, params) {
-    const query = {};
+    const query = params.query || {};
     query[this.id] = id;
 
     return this.Model.findOneAsync(query).then((instance) => {
@@ -143,7 +143,7 @@ class Service {
   }
 
   update (id, data, params) {
-    const query = {};
+    const query = params.query || {};
     query[this.id] = id;
 
     if (Array.isArray(data)) {
